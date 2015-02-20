@@ -1,0 +1,13 @@
+"lastmanstanding"
+{
+	"base"		"gmatch"
+	"title"		"Last Man Standing"
+	"maps"		"^gm_"
+	"menusystem"	"1"
+	"workshopid"	""
+
+	"settings"
+	{
+	}
+
+}

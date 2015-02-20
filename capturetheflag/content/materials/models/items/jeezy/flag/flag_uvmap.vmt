@@ -1,0 +1,10 @@
+"UnlitGeneric"
+{
+	"$basetexture" "models/items/jeezy/flag/flag_uvmap"
+	"$blendtintbybasealpha" 1
+	"$blendtintcoloroverbase" "0.05"
+	"$surfaceprop" "metal"
+	
+}
+
+

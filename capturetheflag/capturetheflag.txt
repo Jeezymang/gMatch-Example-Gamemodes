@@ -1,0 +1,13 @@
+"capturetheflag"
+{
+	"base"		"gmatch"
+	"title"		"Capture The Flag"
+	"maps"		"^gm_"
+	"menusystem"	"1"
+	"workshopid"	""
+
+	"settings"
+	{
+	}
+
+}

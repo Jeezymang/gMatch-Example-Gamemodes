@@ -14,8 +14,8 @@ function GMatch:ToggleFlagBases( bool )
 end
 
 function GMatch:SpawnFlagBases( )
-	for index, spawnPoint in ipairs ( GMatch.Config.FlagBaseSpawns ) do
-		if ( #ents.FindByClass( "flag_base" ) == #GMatch.Config.MaxTeamAmount ) then break end
+	for index, spawnPoint in ipairs ( self.Config.FlagBaseSpawns ) do
+		if ( #ents.FindByClass( "flag_base" ) == #self.Config.MaxTeamAmount ) then break end
 		local flagBase = ents.Create( "flag_base" )
 		flagBase:SetPos( spawnPoint )
 		flagBase:Spawn( )
@@ -26,6 +26,19 @@ end
 function GMatch:AssignFlagBaseTeams( teamOne, teamTwo )
 	local flagBases = ents.FindByClass( "flag_base" )
 	for index, flagBase in ipairs ( flagBases ) do
-		flagBase:ChangeFlagTeam( index )
+		if ( team.NumPlayers( index ) == 0 ) then
+			flagBase:ChangeFlagTeam( 1001 )
+			flagBase:ToggleFlagStatus( false )
+		else
+			flagBase:ChangeFlagTeam( index )
+		end
 	end
+end
+
+function GMatch:ResetTeamScores( )
+	local teamTable = { }
+	for index, teamTbl in pairs ( team.GetAllTeams( ) ) do
+		teamTable[index] = 0
+	end
+	self:SetGameVar( "CurrentScores", teamTable, true )
 end

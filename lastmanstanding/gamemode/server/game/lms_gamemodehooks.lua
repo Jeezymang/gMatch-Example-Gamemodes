@@ -1,4 +1,3 @@
-
 hook.Add( "Initialize", "GMatch:LMS_Initialize", function( )
 	local teamTable = {
 		{ name = "Zombie", col = Color( 125, 45, 45 ) },
@@ -7,16 +6,16 @@ hook.Add( "Initialize", "GMatch:LMS_Initialize", function( )
 	GMatch:CreateTeams( teamTable )
 end )
 
-hook.Add( "OnWeaponLoadout", "GMatch:LMS_OnWeaponLoadout", function( ply, wepTbl ) 
+function GM:OnWeaponLoadout( ply, wepTbl ) 
 	local teamName = team.GetName( ply:Team( ) )
 	if ( teamName == "Zombie" ) then
 		return { "weapon_crowbar" }
 	elseif ( teamName == "Survivor" ) then
 		return { "weapon_shotgun", "weapon_pistol" }
 	end
-end )
+end
 
-hook.Add( "OnBeginRound", "GMatch:LMS_OnBeginRound", function( )
+function GM:OnBeginRound( )
 	for index, ply in ipairs ( player.GetAll( ) ) do
 		ply:SetFrags( 0 )
 		ply:SetDeaths( 0 )
@@ -30,9 +29,9 @@ hook.Add( "OnBeginRound", "GMatch:LMS_OnBeginRound", function( )
 		shuffledPlayers[i]:SetTeam( 1 )
 	end
 	GMatch:RespawnPlayers( )
-end )
+end
 
-hook.Add( "OnRoundCheckWinner", "GMatch:LMS_OnRoundCheckWinner", function( )
+function GM:OnRoundCheckWinner( )
 	if ( #team.GetPlayers( 1 ) == 0 ) then
 		return 2
 	elseif ( #team.GetPlayers( 2 ) == 0 ) then
@@ -42,7 +41,18 @@ hook.Add( "OnRoundCheckWinner", "GMatch:LMS_OnRoundCheckWinner", function( )
 	elseif ( #team.GetPlayers( 2 ) > #team.GetPlayers( 1 ) ) then
 		return 2
 	end
-end )
+end
+
+function GM:OnPlayerSetModel( ply, model )
+	local zombiePlayerModels = { "zombiefast", "zombie", "zombine" }
+	if ( team.GetName( ply:Team( ) ) == "Zombie" ) then
+		return ( player_manager.TranslatePlayerModel( zombiePlayerModels[ math.random( #zombiePlayerModels ) ] ) )
+	end
+end
+
+function GM:OnPlayerAssignTeam( ply )
+	ply:SetTeam( 2 )
+end
 
 hook.Add( "PlayerDeath", "GMatch:LMS_PlayerDeath", function( victim, inflictor, attacker )
 	if ( IsValid( attacker ) and attacker:IsPlayer( ) ) then
@@ -55,12 +65,5 @@ hook.Add( "PlayerDeath", "GMatch:LMS_PlayerDeath", function( victim, inflictor, 
 				GMatch:FinishRound( 1 )
 			end
 		end
-	end
-end )
-
-hook.Add( "OnPlayerSetModel", "GMatch:LMS_OnPlayerSetModel", function( ply, model )
-	local zombiePlayerModels = { "zombiefast", "zombie", "zombine" }
-	if ( team.GetName( ply:Team( ) ) == "Zombie" ) then
-		return ( player_manager.TranslatePlayerModel( zombiePlayerModels[ math.random( #zombiePlayerModels ) ] ) )
 	end
 end )

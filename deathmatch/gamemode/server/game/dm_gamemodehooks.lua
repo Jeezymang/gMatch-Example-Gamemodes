@@ -1,12 +1,12 @@
-hook.Add( "OnBeginRound", "GMatch:DM_OnBeginRound", function( )
+function GM:OnBeginRound( )
 	for index, ply in ipairs ( player.GetAll( ) ) do
 		ply:SetFrags( 0 )
 		ply:SetDeaths( 0 )
 	end
 	GMatch:RespawnPlayers( )
-end )
+end
 
-hook.Add( "OnRoundCheckWinner", "GMatch:DM_OnRoundCheckWinner", function( )
+function GM:OnRoundCheckWinner( )
 	local scoresTable = { }
 	for index, ply in ipairs ( player.GetAll( ) ) do
 		scoresTable[ply:EntIndex( )] = ply:Frags( )
@@ -15,7 +15,11 @@ hook.Add( "OnRoundCheckWinner", "GMatch:DM_OnRoundCheckWinner", function( )
 	if ( winningPlayer ) then
 		return ( Entity( tonumber( winningPlayer ) ) )
 	end
-end )
+end
+
+function GM:OnPlayerSetColor( ply )
+	return ( Color( math.random( 255 ), math.random( 255 ), math.random( 255 ) ) )
+end
 
 hook.Add( "PlayerDeath", "GMatch:DM_PlayerDeath", function( victim, inflictor, attacker )
 	local winningScore = GMatch.Config.ScoreToWin

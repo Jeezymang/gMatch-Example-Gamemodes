@@ -18,6 +18,7 @@ function GM:OnRoundCheckWinner( )
 		scoresTable[ply:EntIndex( )] = ply:GetPlayerVar( "Level", 1 )
 	end
 	local winningPlayer = table.GetWinningKey( scoresTable )
+	if ( scoresTable[winningPlayer] == 0 ) then return end
 	if ( winningPlayer ) then
 		return ( Entity( tonumber( winningPlayer ) ) )
 	end
@@ -29,9 +30,12 @@ hook.Add( "PlayerDeath", "GMatch:GunGame_PlayerDeath", function( victim, inflict
 		GMatch:FinishRound( attacker )
 	elseif ( IsValid( attacker ) and attacker:IsPlayer( ) and attacker ~= victim ) then
 		--attacker:SetLevel( attacker:GetLevel( ) + 1 )
-		attacker:SetPlayerVar( "Level", attacker:GetPlayerVar( "Level", 1 ) + 1, true )
+		local oldLevel, newLevel = attacker:GetPlayerVar( "Level", 1 ), attacker:GetPlayerVar( "Level", 1 ) + 1
+		attacker:DidGainLead( oldLevel, newLevel, function( ply ) return ply:GetPlayerVar( "Level", 1 ) end )
+		attacker:SetPlayerVar( "Level", newLevel, true )
 		attacker:DisplayNotify( "You have reached Level " .. attacker:GetPlayerVar( "Level", 1 ) .. "!", 5, "icon16/lightning.png", nil, nil, true )
 		attacker:GiveCurrentPrimaryAmmo( math.random( 25 ) )
 		attacker:GiveLoadout( attacker:GetLoadout( true ) )
 	end
+	--GMatch:GetLeadingPlayer( function( ply ) return ply:GetPlayerVar( "Level", 1 ) end )
 end )

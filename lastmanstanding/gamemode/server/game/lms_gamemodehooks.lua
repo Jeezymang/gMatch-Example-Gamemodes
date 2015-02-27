@@ -29,6 +29,34 @@ function GM:OnBeginRound( )
 		shuffledPlayers[i]:SetTeam( 1 )
 	end
 	GMatch:RespawnPlayers( )
+	timer.Create( "GMatch_LMS_ZombieSounds", 5, 0, function( )
+		local allZombies = team.GetPlayers( 1 )
+		if ( #allZombies <= 0 ) then return end
+		local rndZombieOne = team.GetPlayers( 1 )[ math.random( #team.GetPlayers( 1 ) )]
+		local rndZombieTwo = team.GetPlayers( 1 )[ math.random( #team.GetPlayers( 1 ) )]
+		local rndZombieThree = team.GetPlayers( 1 )[ math.random( #team.GetPlayers( 1 ) )]
+		local randomRollOne = math.random( 1, 100 )
+		local randomRollTwo = math.random( 1, 100 )
+		local randomRollThree = math.random( 1, 100 )
+		local noiseChance = GMatch.Config.ZombieNoiseChance
+		if ( rndZombieOne:Alive( ) and noiseChance <= randomRollOne ) then
+			rndZombieOne:EmitSound( "npc/zombie/zombie_voice_idle" .. math.random( 1, 14 ) .. ".wav", 75, math.random( 100, 110 ) )
+		end
+		if ( rndZombieTwo:Alive( ) and noiseChance <= randomRollTwo and rndZombieTwo ~= rndZombieOne ) then
+			rndZombieOne:EmitSound( "npc/zombie/zombie_voice_idle" .. math.random( 1, 14 ) .. ".wav", 75, math.random( 100, 110 ) )
+		end
+		if ( rndZombieThree:Alive( ) and noiseChance <= randomRollThree and rndZombieThree ~= rndZombieTwo and rndZombieThree ~= rndZombieOne ) then
+			rndZombieOne:EmitSound( "npc/zombie/zombie_voice_idle" .. math.random( 1, 14 ) .. ".wav", 75, math.random( 100, 110 ) )
+		end
+	end )
+end
+
+function GM:OnEndRound( )
+	timer.Destroy( "GMatch_LMS_ZombieSounds" )
+end
+
+function GM:OnFinishRound( )
+	timer.Destroy( "GMatch_LMS_ZombieSounds" )
 end
 
 function GM:OnRoundCheckWinner( )
@@ -60,6 +88,11 @@ hook.Add( "PlayerDeath", "GMatch:LMS_PlayerDeath", function( victim, inflictor, 
 		local teamName = team.GetName( attacker:Team( ) )
 		local victimTeamName = team.GetName( victim:Team( ) )
 		if ( teamName == "Zombie" and victimTeamName ~= "Zombie" ) then
+			local randomRoll = math.random( 1, 100 )
+			local makeNoise = ( GMatch.Config.ZombieNoiseChance <= randomRoll )
+			if ( makeNoise ) then
+				attacker:EmitSound( "npc/zombie/zombie_die" .. math.random( 1, 3 ) .. ".wav", 75, math.random( 100, 110 ) )
+			end
 			victim:SetTeam( 1 )
 			attacker:DisplayNotify( "You have infected " .. victim:Name( ) .. "!", 5, "icon16/error.png", nil, nil, true )
 			if ( #team.GetPlayers( 2 ) == 0 ) then

@@ -129,10 +129,11 @@ function ENT:Touch( ent )
 				local currentScores = GMatch:GetGameVar( "CurrentScores", { } )
 				local pointRewardAmount = GMatch.Config.PointRewardAmount
 				currentScores[ plyTeam ] = currentScores[ plyTeam ] or 0
+				local oldScore = currentScores[ plyTeam ]
 				currentScores[ plyTeam ] = currentScores[ plyTeam ] + pointRewardAmount
 				GMatch:SetGameVar( "CurrentScores", currentScores, true )
 				self.playerCapturing:SetPlayerVar( "PointsScored", self.playerCapturing:GetPlayerVar( "PointsScored", 0 ) + pointRewardAmount, true )
-				hook.Call( "OnTeamScoredPoints", GAMEMODE, plyTeam, currentScores[ plyTeam ], self.playerCapturing )
+				hook.Call( "OnTeamScoredPoints", GAMEMODE, plyTeam, oldScore, currentScores[ plyTeam ], self.playerCapturing )
 				self.nextScoreTime = CurTime( ) + 1
 			end
 		end

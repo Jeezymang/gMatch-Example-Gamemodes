@@ -26,7 +26,7 @@ end
 
 hook.Add( "PlayerDeath", "GMatch:GunGame_PlayerDeath", function( victim, inflictor, attacker )
 	local winningScore = GMatch.Config.WinningLevel
-	if ( IsValid( attacker ) and attacker:IsPlayer( ) and attacker:GetPlayerVar( "Level", 1 ) >= winningScore ) then
+	if ( IsValid( attacker ) and attacker:IsPlayer( ) and attacker:GetPlayerVar( "Level", 1 ) >= winningScore and GMatch:IsRoundActive( ) ) then
 		GMatch:FinishRound( attacker )
 	elseif ( IsValid( attacker ) and attacker:IsPlayer( ) and attacker ~= victim ) then
 		--attacker:SetLevel( attacker:GetLevel( ) + 1 )

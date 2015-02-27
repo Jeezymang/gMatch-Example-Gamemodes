@@ -27,7 +27,7 @@ hook.Add( "PlayerDeath", "GMatch:GunGame_PlayerDeath", function( victim, inflict
 	local winningScore = GMatch.Config.WinningLevel
 	if ( IsValid( attacker ) and attacker:IsPlayer( ) and attacker:GetPlayerVar( "Level", 1 ) >= winningScore ) then
 		GMatch:FinishRound( attacker )
-	elseif ( IsValid( attacker ) and attacker:IsPlayer( ) ) then
+	elseif ( IsValid( attacker ) and attacker:IsPlayer( ) and attacker ~= victim ) then
 		--attacker:SetLevel( attacker:GetLevel( ) + 1 )
 		attacker:SetPlayerVar( "Level", attacker:GetPlayerVar( "Level", 1 ) + 1, true )
 		attacker:DisplayNotify( "You have reached Level " .. attacker:GetPlayerVar( "Level", 1 ) .. "!", 5, "icon16/lightning.png", nil, nil, true )

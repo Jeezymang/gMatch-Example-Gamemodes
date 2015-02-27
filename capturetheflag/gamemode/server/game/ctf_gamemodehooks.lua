@@ -84,6 +84,11 @@ function GM:OnFinishRound( )
 	GMatch:ResetTeamScores( )
 end
 
+function GM:OnPlayerAssignTeam( )
+	local desiredTeam = GMatch:GetSmallestTeam( )
+	return ( desiredTeam )
+end
+
 hook.Add( "PlayerDeath", "GMatch:CTF_PlayerDeath", function( victim, inflictor, attacker )
 	if ( victim.isCarryingFlag ) then
 		victim:DropFlag( attacker )

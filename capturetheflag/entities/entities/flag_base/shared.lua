@@ -4,6 +4,7 @@ ENT.PrintName = "Flag Base"
 ENT.Author = "Jeezy"
 ENT.Spawnable = false
 ENT.AdminSpawnable = true
+ENT.Model = "models/items/jeezy/flag.mdl"
 
 function ENT:SetupDataTables( )
 	self:NetworkVar( "Int", 0, "FlagTeam")

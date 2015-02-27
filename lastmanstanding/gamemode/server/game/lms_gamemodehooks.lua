@@ -50,8 +50,9 @@ function GM:OnPlayerSetModel( ply, model )
 	end
 end
 
-function GM:OnPlayerAssignTeam( ply )
-	ply:SetTeam( 2 )
+function GM:OnPlayerAssignTeam( )
+	local desiredTeam = GMatch:GetSmallestTeam( )
+	return ( desiredTeam )
 end
 
 hook.Add( "PlayerDeath", "GMatch:LMS_PlayerDeath", function( victim, inflictor, attacker )

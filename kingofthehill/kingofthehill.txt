@@ -1,0 +1,13 @@
+"kingofthehill"
+{
+	"base"		"gmatch"
+	"title"		"King of the Hill"
+	"maps"		"^gm_"
+	"menusystem"	"1"
+	"workshopid"	""
+
+	"settings"
+	{
+	}
+
+}

@@ -15,7 +15,7 @@ end
 
 function GMatch:SpawnFlagBases( )
 	for index, spawnPoint in ipairs ( self.Config.FlagBaseSpawns ) do
-		if ( #ents.FindByClass( "flag_base" ) == #self.Config.MaxTeamAmount ) then break end
+		if ( #ents.FindByClass( "flag_base" ) == self.Config.MaxTeamAmount ) then break end
 		local flagBase = ents.Create( "flag_base" )
 		flagBase:SetPos( spawnPoint )
 		flagBase:Spawn( )
